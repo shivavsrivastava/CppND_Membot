@@ -42,11 +42,65 @@ ChatBot::~ChatBot()
     }
 }
 
-//// STUDENT CODE
-////
 
-////
-//// EOF STUDENT CODE
+// Copy constructor
+ChatBot::ChatBot(const ChatBot& other) {
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+    _currentNode = other._currentNode;
+    _chatLogic   = other._chatLogic;
+    _rootNode    = other._rootNode;
+    _image       = new wxBitmap(*other._image);
+}
+
+// Assignment operator
+ChatBot& ChatBot::operator=(const ChatBot& other) {
+    std::cout << "ChatBot Assignment operator" << std::endl;
+    if(this != &other) {
+        // invalidate data handles
+        _currentNode       = other._currentNode;
+        _chatLogic         = other._chatLogic;
+        _rootNode          = other._rootNode;
+        _image             = new wxBitmap(*other._image);
+    }
+    return *this;
+}
+
+// Move Constructor
+ChatBot::ChatBot(ChatBot&& other) {
+    std::cout << "ChatBot Move Constructor" << std::endl;
+    _currentNode       = other._currentNode;
+    _chatLogic         = other._chatLogic;
+    _rootNode          = other._rootNode;
+    _image             = other._image;
+
+    _chatLogic->SetChatbotHandle(this);
+
+    other._image       = NULL;
+    other._currentNode = nullptr;
+    other._chatLogic   = nullptr;
+    other._rootNode    = nullptr;
+}
+
+// Move Assignment Operator
+ChatBot& ChatBot::operator=(ChatBot&& other) {
+    std::cout << "ChatBot Move Assignment operator" << std::endl;
+    if(this != &other) {
+        // invalidate data handles
+        _currentNode       = other._currentNode;
+        _chatLogic         = other._chatLogic;
+        _rootNode          = other._rootNode;
+        _image             = other._image;
+
+        _chatLogic->SetChatbotHandle(this);
+        
+        other._image       = NULL;
+        other._currentNode = nullptr;
+        other._chatLogic   = nullptr;
+        other._rootNode    = nullptr;
+    }
+    return *this;
+}
+
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
